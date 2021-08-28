@@ -23,7 +23,7 @@ var repo: Repository?
 var sem = DispatchSemaphore.init(value: 0)
 Octokit(config).pullRequest(owner: owner, repository: repository, number: pr_number) { pr_resp in
     Octokit(config).repository(owner: owner, name: repository) { repo_resp in
-        sem.signal()
+        defer { sem.signal() }
         if case .success(let _pr) = pr_resp { pr = _pr }
         if case .success(let _repo) = repo_resp { repo = _repo }
     }
