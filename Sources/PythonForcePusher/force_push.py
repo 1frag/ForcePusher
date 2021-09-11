@@ -1,12 +1,14 @@
 import os
+import sys
 
 from github import Github
 
 
-def main():
+def _main():
     token = input('Token: ')
     owner = input('Owner: ')
     repository = input('Repository: ')
+    no_signed = '--no-signed' in sys.argv
 
     g = Github(token)
     repo = g.get_repo('/'.join([owner, repository]))
@@ -24,9 +26,16 @@ def main():
                    f'&& git checkout origin/{to_branch} '
                    f'&& git diff origin/{to_branch} origin/{from_branch} | git apply '
                    f'&& git add . '
-                   f'&& git commit -m {pr.title!r}').read()
+                   f'&& git commit {"" if no_signed else "-S"} -m {pr.title!r}').read()
 
     if input(out + ' ok? ') == 'yes':
         print(os.popen(f'cd /tmp/{repository} && git push origin HEAD:{from_branch} --force').read())
     else:
         print('cancelled')
+
+
+def main():
+    try:
+        _main()
+    except KeyboardInterrupt:
+        exit(1)
