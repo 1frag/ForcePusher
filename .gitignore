@@ -5,3 +5,4 @@
 xcuserdata/
 /.env
 .idea
+*.egg-info/

@@ -11,7 +11,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "ForcePusher",
+            name: "SwiftForcePusher",
             dependencies: [
                 "OctoKit",
                 .product(name: "Commands", package: "swift-commands")
