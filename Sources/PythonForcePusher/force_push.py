@@ -18,9 +18,7 @@ def get_config():
     try:
         owner, repository = os.popen('git config --get remote.origin.url')\
             .read() \
-            .strip() \
-            .removeprefix('git@github.com:') \
-            .removesuffix('.git') \
+            .strip()[len('git@github.com:'):-len('.git')] \
             .split('/')
         config['owner'], config['repository'] = owner, repository
     except:
